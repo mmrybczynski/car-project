@@ -1,7 +1,16 @@
 // frontend/src/TestPanel.js
-import React from 'react';
+//import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 function TestPanel({ socket }) {
+
+  const [isConnected, setIsConnected] = useState(socket.connected);
+
+   useEffect(() => {
+    socket.on('connect', () => setIsConnected(true));
+    socket.on('disconnect', () => setIsConnected(false));
+   });
   
   // Funkcje pomocnicze do wysyłania komend
   const sendPdcCmd = (cmd) => {
@@ -14,6 +23,13 @@ function TestPanel({ socket }) {
 
   return (
     <div style={styles.panel}>
+<div style={styles.topBar}>
+          <span>Passat B7 System | <strong style={{color: isConnected ? '#4caf50' : 'red'}}>{isConnected ? 'ONLINE' : 'OFFLINE'}</strong></span>
+          <div style={styles.navLinks}>
+            <Link to="/" style={styles.link}>Ekran Główny</Link>
+            <Link to="/test" style={styles.link}>Emulator</Link>
+          </div>
+        </div>
       <h2>🛠️ Panel Testowy (Emulator)</h2>
       
       <div style={styles.section}>
@@ -53,6 +69,7 @@ const styles = {
     maxWidth: '400px',
     textAlign: 'center'
   },
+  link: { color: '#0a84ff', textDecoration: 'none', fontSize: '14px' },
   section: { marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px' },
   buttonGrid: { display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center' },
   btn: { padding: '10px 15px', cursor: 'pointer', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px' },
