@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
   // --- OBSŁUGA KOMEND Z TEST PANELU ---
 
   // 1. Sterowanie symulacją PDC
-  socket.on('cmd_pdc_on', () => {
+  socket.on('cmd_pdc_start', () => {
     if (!simulationInterval) {
       console.log('🟢 Uruchamiam symulację PDC');
       simulationInterval = setInterval(() => {
@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('cmd_pdc_off', () => {
+  socket.on('cmd_pdc_stop', () => {
     if (simulationInterval) {
       console.log('🔴 Zatrzymuję symulację PDC');
       clearInterval(simulationInterval);
@@ -78,6 +78,21 @@ io.on('connection', (socket) => {
     // Backend przekazuje to "udawane" kliknięcie do Dashboardu jako zdarzenie 'steering_wheel'
     io.emit('steering_wheel', action);
     io.emit('server_log', `Wykonano akcję: ${action}`);
+  });
+
+  socket.on('cmd_pdc_on', () => {
+    console.log('PDC ON');
+
+    io.emit('pdc_status', true);
+    io.emit('server_log', `Wykonano akcję: ${true}`);
+  });
+
+
+  socket.on('cmd_pdc_off', () => {
+    console.log('PDC OFF');
+
+    io.emit('pdc_status', false);
+    io.emit('server_log', `Wykonano akcję: ${false}`);
   });
 
   socket.on('disconnect', () => {

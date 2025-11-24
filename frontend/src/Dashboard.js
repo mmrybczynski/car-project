@@ -6,12 +6,19 @@ function Dashboard({ socket }) {
   const [pdcData, setPdcData] = useState({ front_left: 0, front_right: 0,front_sub_left: 0, front_sub_right: 0, rear_left: 0, rear_right: 0, rear_sub_left: 0, rear_sub_right: 0 });
   const [lastAction, setLastAction] = useState(null);
 
+  const [isVisible, setIsVisible] = useState(false);
+
   useEffect(() => {
     // Nasłuchujemy danych tylko gdy ten widok jest włączony
     socket.on('pdc_data', (data) => setPdcData(data));
     socket.on('steering_wheel', (action) => {
       setLastAction(action);
       setTimeout(() => setLastAction(null), 2000);
+    });
+
+    socket.on('pdc_status', (status) => {
+      console.log('Status PDC zmieniony na:', status);
+      setIsVisible(status); // true = pokaż, false = ukryj
     });
 
     return () => {

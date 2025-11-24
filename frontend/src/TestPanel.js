@@ -30,9 +30,11 @@ function TestPanel({ socket }) {
       <div style={styles.section}>
         <h3>Czujniki Parkowania (PDC)</h3>
         <div style={styles.buttonGrid}>
-          <button style={styles.btnSuccess} onClick={() => sendPdcCmd('cmd_pdc_on')}>▶️ PDC Start (Auto)</button>
+          <button style={styles.btnSuccess} onClick={() => sendPdcCmd('cmd_pdc_on')}>PDC ON</button>
+          <button style={styles.btnSuccess} onClick={() => sendPdcCmd('cmd_pdc_off')}>PDC OFF</button>
+          <button style={styles.btnSuccess} onClick={() => sendPdcCmd('cmd_pdc_start')}>▶️ PDC Start (Auto)</button>
           <button style={styles.btn} onClick={() => sendPdcCmd('cmd_pdc_random')}>🎲 Losowa Wartość</button>
-          <button style={styles.btnDanger} onClick={() => sendPdcCmd('cmd_pdc_off')}>⏹️ PDC Stop</button>
+          <button style={styles.btnDanger} onClick={() => sendPdcCmd('cmd_pdc_stop')}>⏹️ PDC Stop</button>
         </div>
       </div>
 
